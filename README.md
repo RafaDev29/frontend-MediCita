@@ -20,5 +20,12 @@ npm run build
 npm run lint
 ```
 
+
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+
+
+# VISTAS DEL PROYECTO 
+### vista pacientes
+<img src="./src/assets/README/pacientes.png" alt="rafadev" style="width: 100%; height: auto;">
