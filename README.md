@@ -1,4 +1,4 @@
-# frontend-medicita-platform
+# frontend-quickquote-platform
 
 ## Project setup
 ```

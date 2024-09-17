@@ -1,25 +1,68 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
-
-const routes = [
-  {
-    path: '/',
-    name: 'home',
-    component: HomeView
-  },
-  {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
-  }
-]
+import { createRouter, createWebHistory } from 'vue-router';
+import store from '@/store';
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
-  routes
+    history: createWebHistory(),
+    routes: [
+        {
+            meta: {
+                title: "Home",
+                requiresAuth: true
+            },
+            path: "/",
+            component: () => import("@/layouts/MasterLayout.vue"),
+            children: [
+              
+
+                
+       
+            ]
+        },
+        {
+            meta: {
+                title: "Login"
+            },
+            path: "/login",
+            name: "login",
+            component: () => import("@/views/LoginView.vue")
+        },
+        // Añadir una ruta por defecto para redirigir a login si no está autenticado
+        {
+            path: '/:pathMatch(.*)*', // Cualquier ruta no especificada
+            redirect: '/login' // Redirigir a login
+        }
+    ]
 })
 
-export default router
+// Navigation Guard  
+router.beforeEach((to, from, next) => {
+    const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+
+    if (requiresAuth && !store.state.isAuthenticated) {
+        // Si la ruta requiere autenticación y el usuario no está autenticado, redirigir al login
+        next({ name: 'login' });
+    } else if (to.name === 'login' && store.state.isAuthenticated) {
+        // Si el usuario ya está autenticado y trata de acceder al login, redirigir según su rol
+        if (store.state.role === "administrador") {
+            next({ name: 'cotizaciones' });
+        } else if (store.state.role === "vendedor") {
+            next({ name: 'cotizaciones' });
+        } else {
+            next();
+        }
+    } else if (to.path === '/' && store.state.isAuthenticated) {
+        // Si el usuario está autenticado y accede a la raíz, redirigir según su rol
+        if (store.state.role === "administrador") {
+            next({ name: 'cotizaciones' });
+        } else if (store.state.role === "vendedor") {
+            next({ name: 'cotizaciones' });
+        } else {
+            next();
+        }
+    } else {
+        // Si no hay ninguna condición que lo bloquee, permitir el acceso a la ruta solicitada
+        next();
+    }
+});
+
+export default router;
