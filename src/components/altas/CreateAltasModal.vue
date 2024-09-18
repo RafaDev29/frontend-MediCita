@@ -1,36 +1,39 @@
 <template>
   <v-card>
     <v-card-title>
-      <span class="text-h5">Crear nuevo Medico</span>
+      <span class="text-h5">Crear nueva Alta medica</span>
     </v-card-title>
     <v-card-text>
       <v-form ref="form" v-model="valid" lazy-validation>
         <!-- Campo para el ID del paciente -->
         <v-text-field
-          v-model="names"
-          label="Nombre"
+          v-model="internmentId"
+          label="Codigo de internado"
+          type="number"
           required
         ></v-text-field>
 
         <!-- Campo para el Número de Habitación -->
         <v-text-field
-          v-model="lastNames"
-          label="Apellidos"
+          v-model="dischargeDate"
+          label="Fecha de alta"
+          type="date"
           required
         ></v-text-field>
 
         <!-- Campo para la Cama Asignada -->
         <v-text-field
-          v-model="phone"
-          label="Telefono"
+          v-model="dischargeTime"
+          label="Hora de alta"
+          type="time"
           required
         ></v-text-field>
 
         <!-- Campo para la Fecha de Admisión -->
         <v-text-field
-          v-model="specialty"
-          label="Especialidad"
-    
+          v-model="authorizingDoctorId"
+          label="Codigo de doctor autorizado"
+        type="number"
           required
         ></v-text-field>
       </v-form>
@@ -54,39 +57,39 @@
 
 <script>
 import { ref } from 'vue';
-import { createDoctorApi } from '@/api/DoctorService';
+import { createAltasApi } from '@/api/AltaService';
 import Swal from 'sweetalert2';
 
 export default {
   setup(_, { emit }) {
-    const names = ref('');
-    const lastNames = ref('');
-    const phone = ref('');
-    const specialty = ref('');
+    const internmentId = ref('');
+    const dischargeDate = ref('');
+    const dischargeTime = ref('');
+    const authorizingDoctorId = ref('');
     const dialogLoader = ref(false); // Estado del diálogo de carga
 
     const submitInternamiento = async () => {
-      if (names.value && lastNames.value && phone.value && specialty.value) {
+      if (internmentId.value && dischargeDate.value && dischargeTime.value && authorizingDoctorId.value) {
         const payload = {
-          names: names.value,
-          lastNames:lastNames.value,
-          phone: phone.value,
-          specialty:specialty.value
+          internmentId: Number(internmentId.value),
+          dischargeDate:dischargeDate.value,
+          dischargeTime: dischargeTime.value,
+          authorizingDoctorId: Number(authorizingDoctorId.value)
         };
 
         // Mostrar diálogo de carga
         dialogLoader.value = true;
 
         try {
-          const response = await createDoctorApi(payload);
+          const response = await createAltasApi(payload);
 
-          emit('close'); // Cerrar el modal antes de mostrar el mensaje
-          dialogLoader.value = false; // Ocultar el diálogo de carga
+          emit('close'); 
+          dialogLoader.value = false; 
 
           // Mostrar mensaje de éxito con SweetAlert
           Swal.fire({
             icon: 'success',
-            title: 'Internamiento Creado',
+            title: 'Alta Creado',
             text: response.data.message,
             confirmButtonText: 'OK',
           });
@@ -109,10 +112,10 @@ export default {
     };
 
     return {
-      names,
-      lastNames,
-      specialty,
-      phone,
+      internmentId,
+      dischargeDate,
+      dischargeTime,
+      authorizingDoctorId,
       dialogLoader,
       submitInternamiento,
     };
