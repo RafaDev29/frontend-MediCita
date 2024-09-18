@@ -1,7 +1,7 @@
 <template>
     <div class="pt-0 mt-0 pb-10 ml-0 mr-0 min-w-max[100%]">
       <v-card-title class="d-flex justify-between">
-        <h1 class="font-bold lg:text-2xl text-xl text-gray-400">MEDICOS</h1>
+        <h1 class="font-bold lg:text-2xl text-xl text-gray-400">PACIENTES</h1>
   
         <!-- Botón para abrir el modal de crear internamiento -->
         <v-btn color="primary" class="white--text" @click="openCreateModal" style="margin-left: auto;">
@@ -11,22 +11,22 @@
   
       <v-row>
         <v-col cols="12">
-       
-          <DoctorTable />
+          <!-- Tabla de internamientos -->
+          <PacienteTable />
         </v-col>
       </v-row>
   
       <!-- Modal para crear el internamiento -->
       <v-dialog v-model="showCreateModal" max-width="500px">
-        <CreateDoctorModal @close="showCreateModal = false" />
+        <CreateInternamientoModal @close="showCreateModal = false" />
       </v-dialog>
     </div>
   </template>
   
   <script setup>
   import { ref } from 'vue';
-  import DoctorTable from '@/components/doctor/DoctorTable.vue';
-  import CreateDoctorModal from '@/components/doctor/CreateDoctorModal.vue';
+  import PacienteTable from '@/components/paciente/PacienteTable.vue';
+  import CreateInternamientoModal from '@/components/paciente/CreatePacienteModal.vue';
   
   // Estado del modal para crear internamiento
   const showCreateModal = ref(false);
