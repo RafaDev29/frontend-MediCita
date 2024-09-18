@@ -30,36 +30,35 @@
   
   <script setup>
   import { ref, onMounted } from 'vue';
-  import { listDoctorApi } from '@/api/DoctorService';
+  import { listVisitaApi } from '@/api/VisitaService';
   
   // Datos reactivos
   const search = ref('');
   const loading = ref(false);
   const headers = ref([
     { title: 'Codigo de visita', align: 'start', key: 'id_visita' },
-    { title: 'fecha de visita', key: 'apellidos' },
-    { title: 'hora de visita', key: 'especialidad' },
-    { title: 'Número de habitación', key: 'telefono' },
-    { title: 'Cama asiganada', key: 'telefono' },
-    { title: 'Fecha de ingreso', key: 'telefono' },
-    { title: 'Nombre del doctor', key: 'telefono' },
-    { title: 'Apellido del doctor', key: 'telefono' },
+    { title: 'fecha de visita', key: 'fecha_visita' },
+    { title: 'hora de visita', key: 'hora_visita' },
+    { title: 'Número de habitación', key: 'numero_habitacion' },
+    { title: 'Cama asiganada', key: 'cama_asignada' },
+    { title: 'Fecha de ingreso', key: 'fecha_ingreso' },
+    { title: 'Nombre del doctor', key: 'doctor_names' },
+    { title: 'Apellido del doctor', key: 'doctor_last_names' },
    
   ]);
   const doctors = ref([]);
   
-  // Funciones
   const fetchInternments = async () => {
     loading.value = true;
     try {
-      const response = await listDoctorApi();
+      const response = await listVisitaApi();
       doctors.value = response.data.data.map(doctor => ({
         id_visita: doctor.id_visita,
-        fecha_visita: doctor.fecha_visita,
+        fecha_visita: new Date(doctor.fecha_visita).toLocaleDateString(),
         hora_visita: doctor.hora_visita,
         numero_habitacion: doctor.numero_habitacion,
         cama_asignada: doctor.cama_asignada,
-        fecha_ingreso : doctor.fecha_ingreso,
+        fecha_ingreso :new Date(doctor.fecha_ingreso).toLocaleDateString(),
         doctor_names : doctor.doctor_names,
         doctor_last_names : doctor.doctor_last_names
 

@@ -7,30 +7,32 @@
       <v-form ref="form" v-model="valid" lazy-validation>
         <!-- Campo para el ID del paciente -->
         <v-text-field
-          v-model="names"
-          label="Nombre"
+          v-model="internmentId"
+          label="Codigo de internamiento"
           required
         ></v-text-field>
 
         <!-- Campo para el Número de Habitación -->
         <v-text-field
-          v-model="lastNames"
-          label="Apellidos"
+          v-model="doctorId"
+          label="Codigo del Doctor"
+          type="number"
           required
         ></v-text-field>
 
         <!-- Campo para la Cama Asignada -->
         <v-text-field
-          v-model="phone"
-          label="Telefono"
+          v-model="visitDate"
+          label="Fecha de visita"
           required
+          type="date"
         ></v-text-field>
 
         <!-- Campo para la Fecha de Admisión -->
         <v-text-field
-          v-model="specialty"
-          label="Especialidad"
-    
+          v-model="visitTime"
+          label="Hora de visita"
+        type="time"
           required
         ></v-text-field>
       </v-form>
@@ -54,31 +56,30 @@
 
 <script>
 import { ref } from 'vue';
-import { createDoctorApi } from '@/api/DoctorService';
+import { createVisitaApi } from '@/api/VisitaService';
 import Swal from 'sweetalert2';
 
 export default {
   setup(_, { emit }) {
-    const names = ref('');
-    const lastNames = ref('');
-    const phone = ref('');
-    const specialty = ref('');
+    const internmentId = ref();
+    const doctorId = ref();
+    const visitDate = ref('');
+    const visitTime = ref('');
     const dialogLoader = ref(false); // Estado del diálogo de carga
 
     const submitInternamiento = async () => {
-      if (names.value && lastNames.value && phone.value && specialty.value) {
+      if (internmentId.value && doctorId.value && visitDate.value && visitTime.value) {
         const payload = {
-          names: names.value,
-          lastNames:lastNames.value,
-          phone: phone.value,
-          specialty:specialty.value
+          internmentId: Number(internmentId.value),
+          doctorId:Number(doctorId.value),
+          visitDate: visitDate.value,
+          visitTime:visitTime.value
         };
 
-        // Mostrar diálogo de carga
         dialogLoader.value = true;
 
         try {
-          const response = await createDoctorApi(payload);
+          const response = await createVisitaApi(payload);
 
           emit('close'); // Cerrar el modal antes de mostrar el mensaje
           dialogLoader.value = false; // Ocultar el diálogo de carga
@@ -86,7 +87,7 @@ export default {
           // Mostrar mensaje de éxito con SweetAlert
           Swal.fire({
             icon: 'success',
-            title: 'Internamiento Creado',
+            title: 'Visita Creada',
             text: response.data.message,
             confirmButtonText: 'OK',
           });
@@ -109,10 +110,10 @@ export default {
     };
 
     return {
-      names,
-      lastNames,
-      specialty,
-      phone,
+      internmentId,
+      doctorId,
+      visitDate,
+      visitTime,
       dialogLoader,
       submitInternamiento,
     };
