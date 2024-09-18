@@ -13,7 +13,17 @@ const router = createRouter({
             component: () => import("@/layouts/MasterLayout.vue"),
             children: [
               
-
+                {
+                    name: "internamiento",
+                    path: "internamiento",
+                    component: () => import("@/views/InternamientoView.vue"),
+                },
+                
+                {
+                    name: "doctor",
+                    path: "doctor",
+                    component: () => import("@/views/DoctorView.vue"),
+                },
                 
        
             ]
@@ -43,19 +53,19 @@ router.beforeEach((to, from, next) => {
         next({ name: 'login' });
     } else if (to.name === 'login' && store.state.isAuthenticated) {
         // Si el usuario ya está autenticado y trata de acceder al login, redirigir según su rol
-        if (store.state.role === "administrador") {
-            next({ name: 'cotizaciones' });
-        } else if (store.state.role === "vendedor") {
-            next({ name: 'cotizaciones' });
+        if (store.state.role === "usuario") {
+            next({ name: 'internamiento' });
+        } else if (store.state.role === "Doctor") {
+            next({ name: 'internamiento' });
         } else {
             next();
         }
     } else if (to.path === '/' && store.state.isAuthenticated) {
         // Si el usuario está autenticado y accede a la raíz, redirigir según su rol
-        if (store.state.role === "administrador") {
-            next({ name: 'cotizaciones' });
-        } else if (store.state.role === "vendedor") {
-            next({ name: 'cotizaciones' });
+        if (store.state.role === "usuario") {
+            next({ name: 'internamiento' });
+        } else if (store.state.role === "Doctor") {
+            next({ name: 'internamiento' });
         } else {
             next();
         }

@@ -50,7 +50,7 @@ export default {
     const response = await authLoginApi(data);
     const user = response.data.data.user;
     const token= response.data.data;
-    store.commit('setUsername', user.username);
+    store.commit('setUsername', user.nombre_usuario);
     store.commit('setToken', token.token);
     store.commit('setRole', user.role);
     store.commit('setIsAuthenticated', true);

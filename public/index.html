@@ -6,10 +6,19 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
     <link rel="icon" href="" />
     <title>Medicita</title>
+    <script>
+      document.addEventListener("visibilitychange", function() {
+        if (document.hidden) {
+          document.title = "No te vayas 😢 bota tu gaaaaaaaaaaaaaaa";
+        } else {
+          document.title = "Medicita";
+        }
+      });
+    </script>
   </head>
   <body>
     <noscript>
-      <strong>ESTA PÁGINA NO ESTA DISPONIBLE</strong>
+      <strong>ESTA PÁGINA NO ESTÁ DISPONIBLE</strong>
     </noscript>
     <div id="app"></div>
   </body>
