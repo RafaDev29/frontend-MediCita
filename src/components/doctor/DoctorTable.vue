@@ -36,6 +36,7 @@
   const search = ref('');
   const loading = ref(false);
   const headers = ref([
+  { title: 'Código de medico', align: 'start', key: 'id_medico' },
     { title: 'Nombre', align: 'start', key: 'nombres' },
     { title: 'Apellido', key: 'apellidos' },
     { title: 'Especialidad', key: 'especialidad' },
@@ -50,6 +51,7 @@
     try {
       const response = await listDoctorApi();
       doctors.value = response.data.data.map(doctor => ({
+        id_medico: doctor.id_medico,
         nombres: doctor.nombres,
         apellidos: doctor.apellidos,
         especialidad: doctor.especialidad,

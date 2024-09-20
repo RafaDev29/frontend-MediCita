@@ -36,6 +36,7 @@
   const search = ref('');
   const loading = ref(false);
   const headers = ref([
+  { title: 'codigo', align: 'start', key: 'id_internamiento' },
     { title: 'Habitación', align: 'start', key: 'numero_habitacion' },
     { title: 'Cama', key: 'cama_asignada' },
     { title: 'Fecha de Ingreso', key: 'fecha_ingreso' },
@@ -52,6 +53,7 @@
     try {
       const response = await authLoginApi();
       internments.value = response.data.data.map(internment => ({
+        id_internamiento: internment.id_internamiento,
         numero_habitacion: internment.numero_habitacion,
         cama_asignada: internment.cama_asignada,
         fecha_ingreso: new Date(internment.fecha_ingreso).toLocaleDateString(),

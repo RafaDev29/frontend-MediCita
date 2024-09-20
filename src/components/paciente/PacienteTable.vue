@@ -36,6 +36,7 @@
   const search = ref('');
   const loading = ref(false);
   const headers = ref([
+  { title: 'Codigo de paciente', align: 'start', key: 'id_paciente' },
     { title: 'Nombre', align: 'start', key: 'nombres' },
     { title: 'Apellido', key: 'apellidos' },
     { title: 'Dirección', key: 'apellidos' },
@@ -54,6 +55,7 @@
     try {
       const response = await listPacienteApi();
       pacientes.value = response.data.data.map(paciente => ({
+        id_paciente : paciente.id_paciente,
         nombres: paciente.nombres,
         apellidos: paciente.apellidos,
         direccion: paciente.direccion,
